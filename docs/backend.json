@@ -1,0 +1,271 @@
+{
+  "entities": {
+    "Student": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Student",
+      "type": "object",
+      "description": "Represents a student in the AcademiaSpark platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Student entity."
+        },
+        "name": {
+          "type": "string",
+          "description": "The student's full name."
+        },
+        "email": {
+          "type": "string",
+          "description": "The student's email address.",
+          "format": "email"
+        },
+        "major": {
+          "type": "string",
+          "description": "The student's major or field of study."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "email"
+      ]
+    },
+    "ForumPost": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ForumPost",
+      "type": "object",
+      "description": "Represents a post in an online forum.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the ForumPost entity."
+        },
+        "studentId": {
+          "type": "string",
+          "description": "Reference to Student. (Relationship: Student 1:N ForumPost)"
+        },
+        "content": {
+          "type": "string",
+          "description": "The content of the forum post."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp of when the post was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "studentId",
+        "content",
+        "timestamp"
+      ]
+    },
+    "LearningModule": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "LearningModule",
+      "type": "object",
+      "description": "Represents an interactive learning module.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the LearningModule entity."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the learning module."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the learning module's content."
+        },
+        "contentUrl": {
+          "type": "string",
+          "description": "URL to the learning module content.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "description",
+        "contentUrl"
+      ]
+    },
+    "StudentModuleInteraction": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "StudentModuleInteraction",
+      "type": "object",
+      "description": "Represents a student's interaction with a learning module.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the StudentModuleInteraction entity."
+        },
+        "studentId": {
+          "type": "string",
+          "description": "Reference to Student. (Relationship: Student 1:N StudentModuleInteraction)"
+        },
+        "moduleId": {
+          "type": "string",
+          "description": "Reference to LearningModule. (Relationship: LearningModule 1:N StudentModuleInteraction)"
+        },
+        "interactionType": {
+          "type": "string",
+          "description": "Type of interaction (e.g., video watched, quiz completed)."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp of when the interaction occurred.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "studentId",
+        "moduleId",
+        "interactionType",
+        "timestamp"
+      ]
+    },
+    "EngagementIntervention": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "EngagementIntervention",
+      "type": "object",
+      "description": "Represents a personalized intervention suggested to a student.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the EngagementIntervention entity."
+        },
+        "studentId": {
+          "type": "string",
+          "description": "Reference to Student. (Relationship: Student 1:N EngagementIntervention)"
+        },
+        "interventionType": {
+          "type": "string",
+          "description": "The type of intervention (e.g., personalized message, suggested activity)."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the intervention."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp of when the intervention was suggested.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "studentId",
+        "interventionType",
+        "description",
+        "timestamp"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "students/{studentId}",
+        "definition": {
+          "entityName": "Student",
+          "schema": {
+            "$ref": "#/backend/entities/Student"
+          },
+          "description": "Stores student profiles.  `studentId` is the Firebase Auth UID. This enables path-based ownership.",
+          "params": [
+            {
+              "name": "studentId",
+              "description": "The Firebase Auth UID of the student."
+            }
+          ]
+        }
+      },
+      {
+        "path": "students/{studentId}/forumPosts/{forumPostId}",
+        "definition": {
+          "entityName": "ForumPost",
+          "schema": {
+            "$ref": "#/backend/entities/ForumPost"
+          },
+          "description": "Stores forum posts created by students. Path-based ownership is used, enabling simple rules.",
+          "params": [
+            {
+              "name": "studentId",
+              "description": "The Firebase Auth UID of the student who created the post."
+            },
+            {
+              "name": "forumPostId",
+              "description": "The unique identifier for the forum post."
+            }
+          ]
+        }
+      },
+      {
+        "path": "learningModules/{learningModuleId}",
+        "definition": {
+          "entityName": "LearningModule",
+          "schema": {
+            "$ref": "#/backend/entities/LearningModule"
+          },
+          "description": "Stores information about learning modules available on the platform.",
+          "params": [
+            {
+              "name": "learningModuleId",
+              "description": "The unique identifier for the learning module."
+            }
+          ]
+        }
+      },
+      {
+        "path": "students/{studentId}/moduleInteractions/{moduleInteractionId}",
+        "definition": {
+          "entityName": "StudentModuleInteraction",
+          "schema": {
+            "$ref": "#/backend/entities/StudentModuleInteraction"
+          },
+          "description": "Tracks student interactions with learning modules. Path-based ownership enables simple rules.",
+          "params": [
+            {
+              "name": "studentId",
+              "description": "The Firebase Auth UID of the student interacting with the module."
+            },
+            {
+              "name": "moduleInteractionId",
+              "description": "The unique identifier for the student-module interaction."
+            }
+          ]
+        }
+      },
+      {
+        "path": "students/{studentId}/engagementInterventions/{engagementInterventionId}",
+        "definition": {
+          "entityName": "EngagementIntervention",
+          "schema": {
+            "$ref": "#/backend/entities/EngagementIntervention"
+          },
+          "description": "Stores personalized intervention suggestions for students. Path-based ownership maintains data privacy and enables simple rules.",
+          "params": [
+            {
+              "name": "studentId",
+              "description": "The Firebase Auth UID of the student for whom the intervention is suggested."
+            },
+            {
+              "name": "engagementInterventionId",
+              "description": "The unique identifier for the engagement intervention."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to support AcademiaSpark's student engagement and participation enhancement features, focusing on personalized interventions and interactive learning modules. It prioritizes authorization independence and QAPs.  Each top-level collection represents a distinct entity with clear ownership or membership models.\n\n*   `students`: Stores student profiles.  Path-based ownership is employed for private student data, simplifying security rules based on `request.auth.uid`.\n*   `students/{studentId}/forumPosts`:  Stores forum posts created by students.  This subcollection enforces path-based ownership, ensuring each student can only manage their own posts. \n*   `learningModules`: Stores information about learning modules available on the platform.\n*   `students/{studentId}/moduleInteractions`: Tracks student interactions with learning modules. Path-based ownership ensures only a student can manage their interaction records.  \n*   `students/{studentId}/engagementInterventions`: Stores personalized intervention suggestions for students. Path-based ownership maintains data privacy.\n\n**Authorization Independence:**\n\n*   The design avoids `get()` calls in security rules by leveraging path-based ownership where appropriate (e.g., `/students/{studentId}/forumPosts`).  Access to a student's forum posts is determined solely by the path and the authenticated user's ID, not by retrieving data from the parent `students` document.\n\n**QAPs (Rules are not Filters):**\n\n*   The separation of data into collections based on ownership and purpose allows for secure `list` operations.  For example, listing forum posts is restricted to the student who created them by using the path `/students/{studentId}/forumPosts`, and security rules can easily enforce this restriction.  Listing learning modules does not expose student-specific data."
+  }
+}

@@ -1,0 +1,130 @@
+/**
+ * @fileoverview Firestore Security Rules for AcademiaSpark.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a strict user-ownership model for student-specific data
+ * while allowing public read access to learning modules. Path-based ownership
+ * is used to simplify and strengthen security.
+ *
+ * Data Structure:
+ * - /students/{studentId}: Stores student profiles. 'studentId' MUST match the
+ *   Firebase Auth UID for ownership.
+ * - /students/{studentId}/forumPosts/{forumPostId}: Forum posts by a student.
+ * - /learningModules/{learningModuleId}: Publicly accessible learning modules.
+ * - /students/{studentId}/moduleInteractions/{moduleInteractionId}: Student
+ *   interactions with modules.
+ * - /students/{studentId}/engagementInterventions/{engagementInterventionId}:
+ *   Personalized intervention suggestions.
+ *
+ * Key Security Decisions:
+ * - Students can only access their own profile data and related subcollections.
+ * - Learning modules are publicly readable but not writable by clients.
+ * - Data validation is relaxed to facilitate rapid prototyping, focusing on
+ *   ownership and relational integrity checks.
+ *
+ * Denormalization for Authorization:
+ * Path-based ownership is used throughout to avoid 'get()' calls in rules.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Secure student profiles. Students can only read and write their own profiles.
+     * @path /students/{studentId}
+     * @allow (create) - User with UID 'user_abc' can create a profile with document ID 'user_abc'.
+     * @allow (get, update, delete) - User with UID 'user_abc' can access their profile at /students/user_abc.
+     * @deny (create) - User with UID 'user_xyz' cannot create a profile with document ID 'user_abc'.
+     * @deny (get, update, delete) - User with UID 'user_xyz' cannot access the profile at /students/user_abc.
+     * @principle Enforces document ownership for reads and writes.
+     */
+    match /students/{studentId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+      allow get: if isOwner(studentId);
+      allow list: if false;
+      allow create: if isOwner(studentId) && request.resource.data.id == studentId;
+      allow update: if isExistingOwner(studentId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(studentId);
+    }
+
+    /**
+     * @description Secure forum posts. Students can only manage their own posts.
+     * @path /students/{studentId}/forumPosts/{forumPostId}
+     * @allow (create, get, list, update, delete) - User with UID 'user_abc' can manage their forum posts under /students/user_abc/forumPosts/.
+     * @deny (create, get, list, update, delete) - User with UID 'user_xyz' cannot manage forum posts under /students/user_abc/forumPosts/.
+     * @principle Restricts access to a user's own data tree.
+     */
+    match /students/{studentId}/forumPosts/{forumPostId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+      allow get: if isOwner(studentId);
+      allow list: if isOwner(studentId);
+      allow create: if isOwner(studentId) && request.resource.data.studentId == studentId;
+      allow update: if isExistingOwner(studentId) && request.resource.data.studentId == resource.data.studentId;
+      allow delete: if isExistingOwner(studentId);
+    }
+
+    /**
+     * @description Learning modules are publicly readable, but only the application can write them.
+     * @path /learningModules/{learningModuleId}
+     * @allow (get, list) - Any user (or no user) can read learning modules.
+     * @deny (create, update, delete) - No client should be able to create, update, or delete learning modules.
+     * @principle Public read with restricted writes.
+     */
+    match /learningModules/{learningModuleId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+    /**
+     * @description Secure student module interactions. Students can only manage their own interactions.
+     * @path /students/{studentId}/moduleInteractions/{moduleInteractionId}
+     * @allow (create, get, list, update, delete) - User with UID 'user_abc' can manage their module interactions under /students/user_abc/moduleInteractions/.
+     * @deny (create, get, list, update, delete) - User with UID 'user_xyz' cannot manage module interactions under /students/user_abc/moduleInteractions/.
+     * @principle Restricts access to a user's own data tree.
+     */
+    match /students/{studentId}/moduleInteractions/{moduleInteractionId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+      allow get: if isOwner(studentId);
+      allow list: if isOwner(studentId);
+      allow create: if isOwner(studentId) && request.resource.data.studentId == studentId;
+      allow update: if isExistingOwner(studentId) && request.resource.data.studentId == resource.data.studentId;
+      allow delete: if isExistingOwner(studentId);
+    }
+
+    /**
+     * @description Secure engagement interventions. Students can only access their own interventions.
+     * @path /students/{studentId}/engagementInterventions/{engagementInterventionId}
+     * @allow (create, get, list, update, delete) - User with UID 'user_abc' can manage their engagement interventions under /students/user_abc/engagementInterventions/.
+     * @deny (create, get, list, update, delete) - User with UID 'user_xyz' cannot manage engagement interventions under /students/user_abc/engagementInterventions/.
+     * @principle Restricts access to a user's own data tree.
+     */
+    match /students/{studentId}/engagementInterventions/{engagementInterventionId} {
+      function isOwner(userId) {
+        return request.auth != null && request.auth.uid == userId;
+      }
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+      allow get: if isOwner(studentId);
+      allow list: if isOwner(studentId);
+      allow create: if isOwner(studentId) && request.resource.data.studentId == studentId;
+      allow update: if isExistingOwner(studentId) && request.resource.data.studentId == resource.data.studentId;
+      allow delete: if isExistingOwner(studentId);
+    }
+  }
+}
