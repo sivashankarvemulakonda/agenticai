@@ -2,23 +2,37 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { BookOpen, LayoutDashboard, Search, Users } from 'lucide-react';
+import { usePathname, redirect } from 'next/navigation';
+import { BookOpen, LayoutDashboard, Search, Users, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Logo } from '@/components/logo';
 import { UserNav } from '@/components/user-nav';
+import { useUser } from '@/firebase';
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { user, isUserLoading } = useUser();
 
   const navItems = [
     { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { href: '/modules', label: 'Modules', icon: BookOpen },
     { href: '/students', label: 'Students', icon: Users },
   ];
+
+  if (isUserLoading) {
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    redirect('/login');
+  }
 
   const nav = (
     <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
