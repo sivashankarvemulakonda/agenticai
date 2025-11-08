@@ -14,13 +14,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
-import { LogOut } from 'lucide-react';
+import { LogOut, Loader2 } from 'lucide-react';
 
 export function UserNav() {
   const { user, isUserLoading } = useUser();
   const auth = useAuth();
 
   const handleLogout = async () => {
+    if (!auth) return;
     try {
       await signOut(auth);
     } catch (error) {
@@ -29,7 +30,7 @@ export function UserNav() {
   };
 
   if (isUserLoading) {
-    return null;
+    return <Loader2 className="h-6 w-6 animate-spin" />;
   }
 
   if (!user) {

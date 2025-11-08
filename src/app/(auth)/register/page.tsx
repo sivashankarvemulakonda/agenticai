@@ -53,6 +53,15 @@ export default function RegisterPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
+    if (!auth) {
+      toast({
+        variant: 'destructive',
+        title: 'Registration Failed',
+        description: 'Authentication service is not available.',
+      });
+      setIsLoading(false);
+      return;
+    }
     try {
       await createUserWithEmailAndPassword(auth, values.email, values.password);
       router.push('/dashboard');

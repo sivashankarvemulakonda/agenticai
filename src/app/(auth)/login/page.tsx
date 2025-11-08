@@ -53,6 +53,15 @@ export default function LoginPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
+    if (!auth) {
+      toast({
+        variant: 'destructive',
+        title: 'Login Failed',
+        description: 'Authentication service is not available.',
+      });
+      setIsLoading(false);
+      return;
+    }
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password);
       router.push('/dashboard');
