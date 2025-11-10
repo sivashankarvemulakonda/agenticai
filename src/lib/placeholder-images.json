@@ -1,0 +1,64 @@
+{
+  "placeholderImages": [
+    {
+      "id": "student-1",
+      "description": "Avatar for student Liam",
+      "imageUrl": "https://images.unsplash.com/photo-1621274790572-7c32596bc67f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzdHVkZW50JTIwcG9ydHJhaXR8ZW58MHx8fHwxNzYwNzMzMTgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "student portrait"
+    },
+    {
+      "id": "student-2",
+      "description": "Avatar for student Olivia",
+      "imageUrl": "https://images.unsplash.com/photo-1621274790572-7c32596bc67f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzdHVkZW50JTIwcG9ydHJhaXR8ZW58MHx8fHwxNzYwNzMzMTgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "student portrait"
+    },
+    {
+      "id": "student-3",
+      "description": "Avatar for student Noah",
+      "imageUrl": "https://images.unsplash.com/photo-1529068755536-a5ade0dcb4e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzdHVkZW50JTIwcG9ydHJhaXR8ZW58MHx8fHwxNzYwNzMzMTgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "student portrait"
+    },
+    {
+      "id": "student-4",
+      "description": "Avatar for student Emma",
+      "imageUrl": "https://images.unsplash.com/photo-1608440208198-65202a3d0e8a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxzdHVkZW50JTIwcG9ydHJhaXR8ZW58MHx8fHwxNzYwNzMzMTgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "student portrait"
+    },
+    {
+      "id": "student-5",
+      "description": "Avatar for student Ava",
+      "imageUrl": "https://images.unsplash.com/photo-1608440208198-65202a3d0e8a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxzdHVkZW50JTIwcG9ydHJhaXR8ZW58MHx8fHwxNzYwNzMzMTgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "student portrait"
+    },
+    {
+      "id": "student-6",
+      "description": "Avatar for student Ethan",
+      "imageUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzdHVkZW50JTIwcG9ydHJhaXR8ZW58MHx8fHwxNzYwNzMzMTgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "student portrait"
+    },
+    {
+      "id": "module-1",
+      "description": "Thumbnail for Intro to Algebra module",
+      "imageUrl": "https://images.unsplash.com/photo-1626438426506-73712ed296b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtYXRoJTIwYWJzdHJhY3R8ZW58MHx8fHwxNzYwNzM1NzE0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "math abstract"
+    },
+    {
+      "id": "module-2",
+      "description": "Thumbnail for Renaissance Art module",
+      "imageUrl": "https://images.unsplash.com/photo-1578926375605-eaf7559b1458?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cmVuYWlzc2FuY2UlMjBwYWludGluZ3xlbnwwfHx8fDE3NjA3NTQ1NTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "renaissance painting"
+    },
+    {
+      "id": "module-3",
+      "description": "Thumbnail for Creative Writing module",
+      "imageUrl": "https://images.unsplash.com/photo-1654356709115-3f68998bead4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3cml0aW5nJTIwZGVza3xlbnwwfHx8fDE3NjA3MzkxNjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "writing desk"
+    },
+    {
+      "id": "module-4",
+      "description": "Thumbnail for Physics 101 module",
+      "imageUrl": "https://images.unsplash.com/photo-1758685848069-5a747851f32c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwaHlzaWNzJTIwZGlhZ3JhbXxlbnwwfHx8fDE3NjA3NjU0MDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "physics diagram"
+    }
+  ]
+}
